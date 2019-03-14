@@ -1,14 +1,28 @@
 spring:
   rabbitmq:
-    host: 116.85.32.90
+    host: 127.0.0.1
     port: 5672
     username: guest
     password: guest
     listener:
       direct:
         acknowledge-mode: manual   # 配置该消费者的ack方式为手动
+    hospSync:
+       host: 127.0.0.1
+       port: 5672
+       username: guest
+       password: guest
+       virtual-host: yzd
+    pay:
+       host: 127.0.0.1
+       port: 5672
+       username: guest
+       password: guest
+       virtual-host: yzd
   devtools:
     restart:
       enabled: false #
 server:
   port: 91
+
+

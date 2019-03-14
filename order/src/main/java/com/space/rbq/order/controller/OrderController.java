@@ -9,10 +9,12 @@ import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -27,6 +29,19 @@ public class OrderController {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
+
+    /**
+     * 测试专用
+     * @return
+     */
+    @GetMapping("test")
+    public Order test() {
+        Order item=new Order();
+        item.setId(new Date().getTime());
+        item.setPrice(0.0D);
+        item.setRemark("");
+        return saveOrder(item);
+    }
 
     /**
      * 保存order , 同时需要向store服务发送通知减库存
