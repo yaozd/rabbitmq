@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.SynchronousQueue;
 
 @Slf4j
-@Component
+//@Component
 public class PaySchedule {
     private String tokenBucketName="pay";
     private int maxThreadSize=2;

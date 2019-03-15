@@ -21,7 +21,7 @@ public class PayTask extends AbstractTask {
             //具体的业务处理逻辑
             //任务操作异常或数据库异常
             //TimeUnit.SECONDS.sleep(30);
-            TimeUnit.SECONDS.sleep(1);
+            TimeUnit.SECONDS.sleep(10);
             log.debug("222");
             if(log.isDebugEnabled()){
                 log.debug("从reids消息队列的值获得的值value="+value);

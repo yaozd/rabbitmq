@@ -52,6 +52,8 @@ public class PayConsumer {
             // 确认消息
             // 如果 channel.basicAck   channel.basicNack  channel.basicReject 这三个方法都不执行，消息也会被确认 【这个其实并没有在官方看到，不过自己测试的确是这样哈】
             // 所以，正常情况下一般不需要执行 channel.basicAck
+            // 所以，正常情况下一般不需要执行 channel.basicAck-(如果使用的手动模式还是需要的-byArvin-2019-03-15-1639)
+            //(不同意上面的观点，如果使用的手动模式还是需要的-byArvin-2019-03-15-1639)
             // channel.basicAck(message.getMessageProperties().getDeliveryTag(), true);
 
         }catch (Exception e){
