@@ -4,7 +4,6 @@ import com.space.rbq.store.test4mq.taskExt.AbstractWorker;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class PayWorker extends AbstractWorker {
@@ -23,7 +22,7 @@ public class PayWorker extends AbstractWorker {
             //具体的业务处理逻辑
             //任务操作异常或数据库异常
             //TimeUnit.SECONDS.sleep(30);
-            TimeUnit.SECONDS.sleep(3);
+            //TimeUnit.SECONDS.sleep(3);
         } catch (Exception ex) {
             //log ex
         }

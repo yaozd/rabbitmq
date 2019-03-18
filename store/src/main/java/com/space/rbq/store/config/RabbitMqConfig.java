@@ -7,7 +7,6 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.amqp.RabbitProperties;
 import org.springframework.boot.autoconfigure.amqp.SimpleRabbitListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +32,7 @@ public class RabbitMqConfig {
         connectionFactory.setPort(port);
         connectionFactory.setUsername(username);
         connectionFactory.setPassword(password);
-        if(virtualHost!=null&virtualHost.trim().length()>0){
+        if (virtualHost != null & virtualHost.trim().length() > 0) {
             connectionFactory.setVirtualHost(virtualHost);
         }
         return connectionFactory;
@@ -49,12 +48,13 @@ public class RabbitMqConfig {
 
     /**
      * ContainerFactory必须与监听RabbitListener关联，才会起作用
-     * @RabbitListener(queues = {QUEUE_NAME1},containerFactory = "hospSyncContainerFactory")
+     *
      * @param configurer
      * @param connectionFactory
      * @return
+     * @RabbitListener(queues = {QUEUE_NAME1},containerFactory = "hospSyncContainerFactory")
      */
-    @Bean(name="hospSyncContainerFactory")
+    @Bean(name = "hospSyncContainerFactory")
     public SimpleRabbitListenerContainerFactory hospSyncFactory(
             SimpleRabbitListenerContainerFactoryConfigurer configurer,
             @Qualifier("hospSyncConnectionFactory") ConnectionFactory connectionFactory) {

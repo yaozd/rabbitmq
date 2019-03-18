@@ -4,9 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
+
 @Slf4j
 public enum TaskConfigEnum {
-    PAY(2);
+    PAY(50);
 
     TaskConfigEnum(Integer maxThreadSize) {
         this.tokenBucket = new ArrayBlockingQueue<Integer>(maxThreadSize);
@@ -20,7 +21,10 @@ public enum TaskConfigEnum {
         try {
             this.data.put(data);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            if (TaskConfigUtil.isShutdown()) {
+                return;
+            }
+            throw new IllegalStateException(e);
         }
     }
 
@@ -28,8 +32,9 @@ public enum TaskConfigEnum {
         try {
             return this.data.take();
         } catch (InterruptedException e) {
-            boolean isInterrupted= Thread.currentThread().isInterrupted();
-            log.info("isInterrupted="+isInterrupted);
+            if (TaskConfigUtil.isShutdown()) {
+                return null;
+            }
             throw new IllegalStateException(e);
         }
     }
@@ -38,6 +43,9 @@ public enum TaskConfigEnum {
         try {
             this.tokenBucket.put(1);
         } catch (InterruptedException e) {
+            if (TaskConfigUtil.isShutdown()) {
+                return;
+            }
             throw new IllegalStateException(e);
         }
     }
@@ -50,7 +58,8 @@ public enum TaskConfigEnum {
         putData(data);
         putToken();
     }
-    public ArrayBlockingQueue<Integer> getTokenBucket(){
+
+    public ArrayBlockingQueue<Integer> getTokenBucket() {
         return this.tokenBucket;
     }
 }

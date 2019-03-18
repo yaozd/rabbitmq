@@ -12,25 +12,31 @@ public class TokenBucketMap {
     private static class SingletonHolder {
         private static final TokenBucketMap INSTANCE = new TokenBucketMap();
     }
+
     public static final TokenBucketMap getInstance() {
         return SingletonHolder.INSTANCE;
     }
-    private TokenBucketMap(){
-        blockingQueueMap=new ConcurrentHashMap<>();
+
+    private TokenBucketMap() {
+        blockingQueueMap = new ConcurrentHashMap<>();
     }
-    private Map<String,ArrayBlockingQueue> blockingQueueMap;
-    public ArrayBlockingQueue getBlockingQueue(String key,int maxThreadSize){
+
+    private Map<String, ArrayBlockingQueue> blockingQueueMap;
+
+    public ArrayBlockingQueue getBlockingQueue(String key, int maxThreadSize) {
         //先删除再创建，保证当前的为最新
         blockingQueueMap.remove(key);
-        blockingQueueMap.put(key,new ArrayBlockingQueue<Integer>(maxThreadSize));
+        blockingQueueMap.put(key, new ArrayBlockingQueue<Integer>(maxThreadSize));
         return blockingQueueMap.get(key);
     }
-    public int getMapSize(){
+
+    public int getMapSize() {
         return blockingQueueMap.size();
     }
-    public boolean isNoRunningTask(){
-        for(ArrayBlockingQueue e:blockingQueueMap.values()){
-            if(!e.isEmpty()){
+
+    public boolean isNoRunningTask() {
+        for (ArrayBlockingQueue e : blockingQueueMap.values()) {
+            if (!e.isEmpty()) {
                 return false;
             }
         }

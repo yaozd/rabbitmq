@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
@@ -23,19 +22,20 @@ public class PayConsumer {
 
     /**
      * queues  指定从哪个队列（queue）订阅消息
+     *
      * @param message
      * @param channel
      */
-    @RabbitListener(queues = {QUEUE_NAME1},containerFactory = "payContainerFactory")
+    @RabbitListener(queues = {QUEUE_NAME1}, containerFactory = "payContainerFactory")
     public void handleMessage(Message message, Channel channel) throws IOException {
         try {
             // 处理消息
-            System.out.println("OrderConsumer {} handleMessage :"+message);
-            if(Thread.currentThread().getId()>0){
+            System.out.println("OrderConsumer {} handleMessage :" + message);
+            if (Thread.currentThread().getId() > 0) {
                 throw new IllegalStateException("模拟异常");
             }
             // 执行减库存操作
-            storeService.update(new Gson().fromJson(new String(message.getBody()),Order.class));
+            storeService.update(new Gson().fromJson(new String(message.getBody()), Order.class));
 
             /**
              * 第一个参数 deliveryTag：就是接受的消息的deliveryTag,可以通过msg.getMessageProperties().getDeliveryTag()获得
@@ -56,10 +56,10 @@ public class PayConsumer {
             //(不同意上面的观点，如果使用的手动模式还是需要的-byArvin-2019-03-15-1639)
             // channel.basicAck(message.getMessageProperties().getDeliveryTag(), true);
 
-        }catch (Exception e){
-            log.error("OrderConsumer  handleMessage {} , error:",message,e);
+        } catch (Exception e) {
+            log.error("OrderConsumer  handleMessage {} , error:", message, e);
             // 处理消息失败，将消息重新放回队列
-            channel.basicNack(message.getMessageProperties().getDeliveryTag(), false,true);
+            channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
         }
     }
 }

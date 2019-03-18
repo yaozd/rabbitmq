@@ -24,19 +24,21 @@ public class RabbitMqConfigForPay {
         connectionFactory.setPort(port);
         connectionFactory.setUsername(username);
         connectionFactory.setPassword(password);
-        if(virtualHost!=null&virtualHost.trim().length()>0){
+        if (virtualHost != null & virtualHost.trim().length() > 0) {
             connectionFactory.setVirtualHost(virtualHost);
         }
         return connectionFactory;
     }
+
     /**
      * ContainerFactory必须与监听RabbitListener关联，才会起作用
-     * @RabbitListener(queues = {QUEUE_NAME1},containerFactory = "hospSyncContainerFactory")
+     *
      * @param configurer
      * @param connectionFactory
      * @return
+     * @RabbitListener(queues = {QUEUE_NAME1},containerFactory = "hospSyncContainerFactory")
      */
-    @Bean(name="payContainerFactory")
+    @Bean(name = "payContainerFactory")
     public SimpleRabbitListenerContainerFactory hospSyncFactory(
             SimpleRabbitListenerContainerFactoryConfigurer configurer,
             @Qualifier("payConnectionFactory") ConnectionFactory connectionFactory) {
